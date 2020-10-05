@@ -1,0 +1,4455 @@
+------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/noeljohnson/Dropbox/Research/Revolutionary Expropriation/Replica
+> tion Files/Confiscations Analysis JLE Final.log
+  log type:  text
+ opened on:   5 Oct 2020, 14:06:30
+
+. 
+. *fix the auction plot variables to get rid of mechanical zeroes (the original sour
+> ce listed 0 for missing values)
+
+. replace avg_acre_p=. if num_plots==0
+(392 real changes made, 392 to missing)
+
+. replace avg_price_ =. if num_plots==0
+(392 real changes made, 392 to missing)
+
+. 
+. *generate logs of some variables used in the analysis
+
+. gen ln_ma_1789_ba=ln(ma_1789_ba)
+
+. gen ln_ma_1789_bo=ln(ma_1789_bo)
+
+. gen ln_ma_1789_ca=ln(ma_1789_ca)
+
+. gen ln_ma_1789_ma=ln(ma_1789_ma)
+
+. gen lwheatyield=ln(wheat_yiel)
+
+. gen lwheat_hect=ln(wheat_hect)
+
+. gen lpotatoyield=ln(potato_yie)
+
+. gen lpotato_hect=ln(potato_hec)
+
+. 
+. *One of the districts has a mis-coded value for wheat yields, exclude it from samp
+> le
+
+. gen sample=1
+
+. *replace sample=0 if id==1017007
+
+. *define the sample as including only districts with data on area of church land co
+> nfiscated
+
+. replace sample=0 if super1adj==.
+(340 real changes made)
+
+. 
+. *Consolidate 22 region FE's into the currently used by the French government (sinc
+> e 1 July 2016) 13 (minus corsica = 12).
+
+. 
+. gen FE13=0
+
+. 
+. replace FE13=7 if region22id == 1010
+(27 real changes made)
+
+. replace FE13=4 if region22id == 989
+(6 real changes made)
+
+. replace FE13=2 if region22id ==990
+(34 real changes made)
+
+. replace FE13=7 if region22id ==991
+(22 real changes made)
+
+. replace FE13=3 if region22id == 992
+(19 real changes made)
+
+. replace FE13=1 if region22id ==993
+(30 real changes made)
+
+. replace FE13= 8 if region22id ==994
+(36 real changes made)
+
+. replace FE13=9 if region22id == 995
+(39 real changes made)
+
+. replace FE13=4 if region22id ==996
+(24 real changes made)
+
+. replace FE13=1 if region22id ==998
+(19 real changes made)
+
+. replace FE13=3 if region22id ==999
+(13 real changes made)
+
+. replace FE13=5 if region22id ==1001
+(27 real changes made)
+
+. replace FE13=2 if region22id ==1002
+(17 real changes made)
+
+. replace FE13=4 if region22id ==1003
+(34 real changes made)
+
+. replace FE13=5 if region22id ==1004
+(43 real changes made)
+
+. replace FE13=6 if region22id ==1005
+(16 real changes made)
+
+. replace FE13=11 if region22id ==1006
+(39 real changes made)
+
+. replace FE13=6 if region22id ==1007
+(20 real changes made)
+
+. replace FE13=2 if region22id ==1008
+(25 real changes made)
+
+. replace FE13=12 if region22id ==1009
+(27 real changes made)
+
+. replace FE13=10 if region22id == 1000
+(16 real changes made)
+
+. replace FE13=4 if id==1057008
+(1 real change made)
+
+. replace region22id=1003 if id==1057008
+(1 real change made)
+
+. 
+. *Import the 1852 Agricultural Survey Data (non-crop data)
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Variables Matched 1852.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Import the 1852 Agricultural Survey Data (crop data)
+
+. merge m:1 MatchedArr1852 using "/Users/noeljohnson/Dropbox/Research/Revolutionary 
+> Expropriation/Replication Files/Data Sets/Matched 1852 Crops.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            96
+        from master                         0  (_merge==1)
+        from using                         96  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(96 observations deleted)
+
+. drop _merge
+
+. 
+. *Import the 1852 Agricultural Survey Data (cultures diverses)
+
+. merge m:1 MatchedArr1852 using "/Users/noeljohnson/Dropbox/Research/Revolutionary 
+> Expropriation/Replication Files/Data Sets/Matched cultures_diverses.dta"
+(note: variable v316 was int, now long to accommodate using data's values)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            96
+        from master                         0  (_merge==1)
+        from using                         96  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(96 observations deleted)
+
+. drop _merge
+
+. 
+. *replace missing variable code of -1 with missing == . in the 1852 data
+
+. foreach var of varlist v315-v314 {
+  2. replace `var'=. if `var'==-1
+  3. }
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(2 real changes made, 2 to missing)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(9 real changes made, 9 to missing)
+(117 real changes made, 117 to missing)
+(85 real changes made, 85 to missing)
+(36 real changes made, 36 to missing)
+(12 real changes made, 12 to missing)
+(39 real changes made, 39 to missing)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+
+. 
+. *Generate some variables from the 1852 census
+
+. 
+. *wheat yields
+
+. label var v3 "1852 average wheat (froment) yield per hectare (hectoliters)"
+
+. gen lwheatyield1852=ln(v3)
+(1 missing value generated)
+
+. label var lwheatyield1852 "log 1852 average wheat (froment) yield per hectare (hec
+> toliters)"
+
+. *wheat hectares
+
+. label var v1 "1852 number of hectares of wheat cultivation"
+
+. gen lwheathectares1852 = ln(v1)
+(1 missing value generated)
+
+. label var lwheathectares1852 "log 1852 number of hectares of wheat cultivation"
+
+. *straw yields
+
+. label var v4 "1852 average wheat straw (paille) yield per hectare (quintaux m'e9tr
+> iques)"
+
+. gen lwheatstraw1852 = ln(v4)
+(1 missing value generated)
+
+. label var lwheatstraw1852 "log 1852 average wheat straw (paille) yield per hectare
+>  (quintaux m'e9triques)"
+
+. *potato yields
+
+. label var v150 "1852 average potato yield per hectare (hectoliters)"
+
+. gen lpotatoyield1852 = ln(v150)
+
+. label var lpotatoyield1852 "log 1852 average potato yield per hectare (hectoliters
+> )"
+
+. *potato hectares
+
+. label var v148 "1852 number of hectares of potato cultivation"
+
+. gen lpotatohectares1852 = ln(v148)
+
+. label var lpotatohectares1852 "log 1852 number of hectares of potato cultivation"
+
+. *rye yields
+
+. label var v45 "1852 average rye (seigle) yield per hectare (hectoliters)"
+
+. gen lryeyield1852 = ln(v45)
+(10 missing values generated)
+
+. label var lryeyield1852 "log 1852 average rye (seigle) yield per hectare (hectolit
+> ers)"
+
+. *rye hectares
+
+. label var v43 "1852 number of hectares of rye cultivation"
+
+. gen lryehectares1852 = ln(v43)
+(10 missing values generated)
+
+. label var lryehectares1852 "log 1852 number of hectares of rye cultivation"
+
+. *rye straw
+
+. label var v46 "1852 average rye straw (paille) yield per hectare (quintaux m'e9tri
+> ques)"
+
+. gen lryestraw1852 = ln(v46)
+(10 missing values generated)
+
+. label var lryestraw1852 "log 1852 average rye straw (paille) yield per hectare (qu
+> intaux m'e9triques)"
+
+. 
+. *marais (use v326--overall land to make percentages)
+
+. label var v326 "1852 superficie totale"
+
+. label var v320 "1852 terres labourable"
+
+. label var v327 "1852 marais susceptible to being drained (hectares)"
+
+. gen potentialdrainage1852 = (v327/v326)
+
+. gen ALTpotentialdrainage1852 = (v327/v320)
+
+. label var potentialdrainage1852 "1852 marais susceptible to being drained (percent
+> )"
+
+. *prairies artificielles
+
+. label var v318 "1852 prairies artificielles (planted with legumineuses) (hectares)
+> "
+
+. gen prairies1852=(v318/v326)
+
+. gen ALTprairies1852=(v318/v320)
+
+. label var prairies1852 "1852 prairies artificielles (planted with legumineuses) (p
+> ercent)"
+
+. label var ALTprairies1852 "1852 prairies artificielles (percent of workable land)"
+
+. *jachere
+
+. label var v319 "1852 fallow land (hectares)"
+
+. gen jacheres1852 = (v319/v326)
+
+. gen ALTjacheres1852=(v319/v320)
+
+. label var jacheres1852 "1852 fallow land (percent)"
+
+. label var ALTjacheres1852 "1852 fallow land (percent of workable land)"
+
+. 
+. *share owners
+
+. label var v500 "1852 nombre owners ayant des propri'e9t'e9s sur le territoire sans
+>  y demeurer"
+
+. label var v501 "1852 nombre owners demeurant sur le territoire sans cultiver eux-m
+> 'eames"
+
+. label var v502 "1852 nombre owners ne cultivant que pour eux-m'eames"
+
+. label var v503 "1852 nombre owners cultivant pour eux-m'eames et pour autrui (jour
+> naliers)"
+
+. label var v504 "1852 nombre des fermiers (payant un fermage fixe en argent)"
+
+. label var v505 "1852 nombre des m'e9tayers ou colons, etc. (donnant au propri'e9ta
+> ire une part des produits)"
+note: label truncated to 80 characters
+
+. 
+. gen shareowners1852=(v500+v501+v502+v503)/(v500+v501+v502+v503+v504+v505)
+
+. label var shareowners1852 "1852 shareowners"
+
+. gen owneroperator1852=(v502+v503)/(v500+v501+v502+v503)
+
+. label var owneroperator1852 "1852 owner operators"
+
+. 
+. *share absentee landlords
+
+. gen shareabsentee1852=(v500)/(v500+v501+v502+v503)
+
+. label var shareabsentee1852 "1852 share landlords not living on lands"
+
+. 
+. *sharecroppers
+
+. gen sharemetayer1852=(v505)/(v504+v505)
+
+. label var sharemetayer1852 "1852 share farmers that are metayers"
+
+. 
+. *clean up by dropping 1852 variables not used
+
+. drop v315-v317
+
+. drop v321-v325
+
+. drop v506-v598
+
+. drop v2
+
+. drop v5-v42
+
+. drop v44
+
+. drop v47-v147
+
+. drop v149
+
+. drop v151-v314
+
+. 
+. *create department level yields for 1841 and 1852
+
+. *dept wheat yields 1841
+
+. sort deptid
+
+. by deptid: egen deptwheatyield1841 = mean(lwheatyield)
+
+. label var deptwheatyield1841 "1841 log department wheat yields"
+
+. *dept wheat yields 1852
+
+. sort deptid
+
+. by deptid: egen deptwheatyield1852 = mean(lwheatyield1852)
+
+. label var deptwheatyield1852 "1852 log department wheat yields"
+
+. 
+. *import the department level yields from 1892 and 1929
+
+. merge m:m deptid using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropri
+> ation/Replication Files/Data Sets/wheat1892_1929.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             7
+        from master                         0  (_merge==1)
+        from using                          7  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==1
+(0 observations deleted)
+
+. drop if _merge==2
+(7 observations deleted)
+
+. drop _merge
+
+. 
+. *dept wheat yields1892
+
+. gen lwheatyield1892 = ln(wheatyield1892)
+(16 missing values generated)
+
+. label var lwheatyield1892 "log wheat yields in 1892 (hectoliters)"
+
+. *dept wheat yields1929
+
+. gen lwheatyield1929 = ln(wheatyieldwinter1929)
+
+. label var lwheatyield1929 "log winter wheat yields in 1929 (hectoliters)"
+
+. gen lspringyield1929 = ln(wheatyieldspring1929)
+(56 missing values generated)
+
+. label var lspringyield1929 "log spring wheat yields in 1929 (hectoliters)"
+
+. 
+. *Merge in the Bishoprics data (Source: Bosker, Maarten, Eltjo Buringh, and Jan Lui
+> ten Van Zanden. "From baghdad to london: Unraveling urban development in europe, t
+> he middle east, and north africa, 800–1800." Review of Economics and Statistics 95
+> , no. 4 (2013): 1418-1437.)
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Bishop_Near.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/France_Bishop_Near.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Merge in archbishopric data
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/archbishop_dist_full.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Merge in data from 1862 agricultural survey
+
+. merge m:m deptid using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropri
+> ation/Replication Files/Data Sets/Ag Survey 1862.dta"
+(note: variable deptid was byte, now float to accommodate using data's values)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            20
+        from master                         0  (_merge==1)
+        from using                         20  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(20 observations deleted)
+
+. drop _merge
+
+. 
+. *Merge in new MA measures including own district and non-French cities
+
+. merge m:m id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Market Access with District different costs.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           251
+        from master                         0  (_merge==1)
+        from using                        251  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(251 observations deleted)
+
+. drop if id==.
+(0 observations deleted)
+
+. count
+  534
+
+. drop _merge
+
+. 
+. *generate logs of MA variables
+
+. gen ln_ma_1789_bo_own_dist_default = ln(ma_1789_bo_own_dist_default)
+
+. gen ln_ma_1789_ba_own_dist_default = ln(ma_1789_ba_own_dist_default)
+
+. gen ln_ma_1789_ca_own_dist_default = ln(ma_1789_ca_own_dist_default)
+
+. gen ln_ma_1789_ma_own_dist_default = ln(ma_1789_ma_own_dist_default)
+
+. 
+. *merge in data on department revenues in 1880
+
+. merge m:m deptid using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropri
+> ation/Replication Files/Data Sets/revenus communes.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             5
+        from master                         0  (_merge==1)
+        from using                          5  (_merge==2)
+
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(5 observations deleted)
+
+. drop _merge
+
+. 
+. *merge in data on district credit in 1840
+
+. merge m:m id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/credit1840.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             4
+        from master                         1  (_merge==1)
+        from using                          3  (_merge==2)
+
+    matched                               533  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(3 observations deleted)
+
+. count
+  534
+
+. drop _merge
+
+. 
+. *The four data sets below were generated using the R code and data contained in th
+> e folder ""/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriation/Replica
+> tion Files/Data Sets/Cities_Bins_Comment_10" The commented code file is "R_Code_Ci
+> ties_Bins.R".
+
+. *Merge in distance to city bins for r&r point 10
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Cities_Bins_Comment_10/districts_Q1234.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Merge in distance to small_bishoprics (below 4th quartile) for r&r point 10
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Cities_Bins_Comment_10/dist_small_bishops.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Merge in distance to very_small_bishoprics (below median) for r&r point 10
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Cities_Bins_Comment_10/dist_very_small_bishops.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. *Merge in distance to first_quartile_bishops (in 1st quartile of pop) for r&r poin
+> t 10
+
+. merge 1:1 id using "/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriatio
+> n/Replication Files/Data Sets/Cities_Bins_Comment_10/dist_first_quartile_bishops.d
+> ta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               534  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. 
+. *BEGIN THE ANALYSIS
+
+. 
+. *Figure for presentations: Lpoly of bivariate relationship between wheatyield and 
+> confiscations
+
+. *lpoly lwheatyield super1adj if sample==1,
+
+. 
+. *Table 1: Auction plot value per hectare in 1790 and distance from nearest Bishopr
+> ic
+
+. *This table is reproduced using the .do file "Table1.do" contained in the top-leve
+> l Replication Files folder.
+
+. 
+. *Table 2: Percent Land Confiscated in District and Wheat Production
+
+. *Panel A: Wheat Yields
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg lwheatyield super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit if sample==1, robust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+              lwheatyield     lwheatyield     lwheatyield   
+------------------------------------------------------------
+super1adj          0.0276***       0.0245***       0.0199***
+                (0.00376)       (0.00387)       (0.00341)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.294           0.337           0.452   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg lwheatyield super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit i.FE13 if sample==1, robust
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+              lwheatyield     lwheatyield     lwheatyield   
+------------------------------------------------------------
+super1adj         0.00983***      0.00945***      0.00941***
+                (0.00345)       (0.00339)       (0.00341)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.588           0.590           0.591   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Panel A: Wheat Hectares
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg lwheat_hect super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit
+
+. eststo: quietly: reg lwheat_hect super1adj wheatsuit if sample==1, robust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access
+
+. eststo: quietly: reg lwheat_hect super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+              lwheat_hect     lwheat_hect     lwheat_hect   
+------------------------------------------------------------
+super1adj          0.0386***       0.0215**        0.0216** 
+                (0.00937)       (0.00884)       (0.00898)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.054           0.191           0.187   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg lwheat_hect super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg lwheat_hect super1adj wheatsuit i.FE13 if sample==1, robust
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg lwheat_hect super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+              lwheat_hect     lwheat_hect     lwheat_hect   
+------------------------------------------------------------
+super1adj          0.0311**        0.0246**        0.0245** 
+                 (0.0120)        (0.0105)        (0.0103)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.176           0.277           0.278   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 3: Percent Land Confiscated in District and Land Usage
+
+. *Panel A: Percent of Arable Land Laying Fallow in 1852
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg ALTjacheres1852 super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit if sample==1, robust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             ALTjach~1852    ALTjach~1852    ALTjach~1852   
+------------------------------------------------------------
+super1adj        -0.00639***     -0.00529***     -0.00400***
+                (0.00106)       (0.00115)       (0.00108)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.135           0.181           0.259   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg ALTjacheres1852 super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit i.FE13 if sample==1, robu
+> st
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             ALTjach~1852    ALTjach~1852    ALTjach~1852   
+------------------------------------------------------------
+super1adj        -0.00387***     -0.00385***     -0.00384***
+                (0.00134)       (0.00134)       (0.00134)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.424           0.421           0.421   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Panel B: Percent of Arable Used as "Prairies Artificielles" (seeded with alfalfa,
+>  clover, rye-grass, etc... Suggests 4 field rotation or "Norfolk System")
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg ALTprairies1852 super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit if sample==1, robust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             ALTprai~1852    ALTprai~1852    ALTprai~1852   
+------------------------------------------------------------
+super1adj         0.00404***      0.00324***      0.00267***
+               (0.000777)      (0.000750)      (0.000725)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.154           0.227           0.269   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg ALTprairies1852 super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit i.FE13 if sample==1, robu
+> st
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             ALTprai~1852    ALTprai~1852    ALTprai~1852   
+------------------------------------------------------------
+super1adj         0.00183**       0.00160**       0.00160** 
+               (0.000731)      (0.000720)      (0.000723)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.450           0.480           0.477   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 4: Percent Land Confiscated in District and Number of Pipe Manufacturers
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for elevation range
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range if sample==1, r
+> obust
+(est2 stored)
+
+. *Regression 3: control for elevation range and market access
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default  if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             fab~5kbuffer    fab~5kbuffer    fab~5kbuffer   
+------------------------------------------------------------
+super1adj           0.242***        0.202***        0.208***
+                 (0.0633)        (0.0634)        (0.0645)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.100           0.124           0.122   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for elevation range, FE13
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range i.FE13 if sampl
+> e==1, robust
+(est2 stored)
+
+. *Regression 6: control for elevation range and market access, FE13
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default i.FE13  if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             fab~5kbuffer    fab~5kbuffer    fab~5kbuffer   
+------------------------------------------------------------
+super1adj           0.189***        0.167**         0.164** 
+                 (0.0656)        (0.0669)        (0.0674)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.347           0.379           0.383   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: IV Regressions and Robustness (for space considerations, notes in footno
+> te 25)
+
+. *Table 5: Column 1: IV reg using bishop_dist
+
+. eststo: ivreg2 lwheatyield (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789_ba_own_
+> dist_default  if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      11.64    0.0008 |       11.89   0.0006 |       11.64
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=10.50    P-val=0.0012
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      10.63
+Kleibergen-Paap Wald rk F statistic                                11.64
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=      15.75     P-val=0.0001
+Anderson-Rubin Wald test           Chi-sq(1)=     16.08     P-val=0.0001
+Stock-Wright LM S statistic        Chi-sq(1)=     12.48     P-val=0.0004
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    28.92
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  16.97385271                Centered R2   =   0.1258
+Total (uncentered) SS   =  1270.984279                Uncentered R2 =   0.9883
+Residual SS             =   14.8390033                Root MSE      =    .2766
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+      lwheatyield |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0513028   .0152956     3.35   0.001     .0213239    .0812816
+        wheatsuit |  -.0124819    .024087    -0.52   0.604    -.0596916    .0347278
+ln_ma_1789_ba_o~t |    .232587   .1025733     2.27   0.023      .031547     .433627
+            _cons |  -.8565748   1.265913    -0.68   0.499    -3.337719    1.624569
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             10.503
+                                                   Chi-sq(1) P-val =    0.0012
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               10.628
+                         (Kleibergen-Paap rk Wald F statistic):         11.643
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: xi: ivreg2 lwheatyield (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789_ba_
+> own_dist_default i.FE13 if sample==1, robust ffirst
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      11.75    0.0008 |       12.74   0.0004 |       11.75
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.74    P-val=0.0006
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       8.54
+Kleibergen-Paap Wald rk F statistic                                11.75
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=      13.80     P-val=0.0003
+Anderson-Rubin Wald test           Chi-sq(1)=     14.95     P-val=0.0001
+Stock-Wright LM S statistic        Chi-sq(1)=     14.88     P-val=0.0001
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =    16.79
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  16.97385271                Centered R2   =   0.2015
+Total (uncentered) SS   =  1270.984279                Uncentered R2 =   0.9893
+Residual SS             =  13.55293319                Root MSE      =    .2643
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+      lwheatyield |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .057771   .0191561     3.02   0.003     .0202256    .0953163
+        wheatsuit |  -.0049428   .0193832    -0.26   0.799    -.0429332    .0330475
+ln_ma_1789_ba_o~t |   .1177082   .1140616     1.03   0.302    -.1058483    .3412648
+         _IFE13_2 |  -.0709903   .0885982    -0.80   0.423    -.2446396    .1026589
+         _IFE13_3 |   .2449151   .1000337     2.45   0.014     .0488527    .4409775
+         _IFE13_4 |   -.109635   .1050901    -1.04   0.297    -.3156078    .0963378
+         _IFE13_5 |  -.0407074   .0700562    -0.58   0.561    -.1780151    .0966002
+         _IFE13_6 |  -.2891598   .2582352    -1.12   0.263    -.7952915    .2169719
+         _IFE13_7 |   .0532277   .0781597     0.68   0.496    -.0999625    .2064178
+         _IFE13_8 |   .3254357     .13092     2.49   0.013     .0688372    .5820342
+         _IFE13_9 |  -.0993706   .1257067    -0.79   0.429    -.3457512    .1470099
+        _IFE13_10 |   .0922712   .1631899     0.57   0.572    -.2275752    .4121176
+        _IFE13_11 |  -.0195469   .1075045    -0.18   0.856    -.2302518     .191158
+        _IFE13_12 |  -.1040104   .1514074    -0.69   0.492    -.4007635    .1927427
+            _cons |   .6395665   1.496044     0.43   0.669    -2.292626    3.571759
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.740
+                                                   Chi-sq(1) P-val =    0.0006
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                8.538
+                         (Kleibergen-Paap rk Wald F statistic):         11.753
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default _IFE13_2
+                      _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8
+                      _IFE13_9 _IFE13_10 _IFE13_11 _IFE13_12
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: ivreg2 fabriques_25kbuffer (super1adj=fr_bishop_dist) elevation_range ln_m
+> a_1789_ba_own_dist_default   if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      11.84    0.0007 |       12.08   0.0005 |       11.84
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=10.51    P-val=0.0012
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      11.09
+Kleibergen-Paap Wald rk F statistic                                11.84
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=       6.22     P-val=0.0135
+Anderson-Rubin Wald test           Chi-sq(1)=      6.35     P-val=0.0118
+Stock-Wright LM S statistic        Chi-sq(1)=      5.63     P-val=0.0177
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    10.79
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  3706.438144                Centered R2   =   0.0440
+Total (uncentered) SS   =         9357                Uncentered R2 =   0.6213
+Residual SS             =  3543.443485                Root MSE      =    4.274
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+fabriques_25kbu~r |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .4471405   .1990135     2.25   0.025     .0570813    .8371997
+  elevation_range |  -.0010698   .0006859    -1.56   0.119    -.0024141    .0002746
+ln_ma_1789_ba_o~t |   -1.68517   1.637287    -1.03   0.303    -4.894194    1.523855
+            _cons |   26.04047   21.30987     1.22   0.222    -15.72612    67.80705
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             10.512
+                                                   Chi-sq(1) P-val =    0.0012
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               11.095
+                         (Kleibergen-Paap rk Wald F statistic):         11.836
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: elevation_range ln_ma_1789_ba_own_dist_default
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est3 stored)
+
+. eststo: xi: ivreg2 fabriques_25kbuffer (super1adj=fr_bishop_dist) elevation_range 
+> ln_ma_1789_ba_own_dist_default  i.FE13 if sample==1, robust ffirst
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      10.33    0.0016 |       11.20   0.0008 |       10.33
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=9.94     P-val=0.0016
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       7.89
+Kleibergen-Paap Wald rk F statistic                                10.33
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       8.62     P-val=0.0038
+Anderson-Rubin Wald test           Chi-sq(1)=      9.34     P-val=0.0022
+Stock-Wright LM S statistic        Chi-sq(1)=      9.22     P-val=0.0024
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =     6.41
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  3706.438144                Centered R2   =   0.1649
+Total (uncentered) SS   =         9357                Uncentered R2 =   0.6692
+Residual SS             =  3095.124812                Root MSE      =    3.994
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+fabriques_25kbu~r |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .7309159   .2980267     2.45   0.014     .1467943    1.315038
+  elevation_range |  -.0016706    .000898    -1.86   0.063    -.0034307    .0000895
+ln_ma_1789_ba_o~t |  -2.052363   1.797735    -1.14   0.254    -5.575859    1.471133
+         _IFE13_2 |   1.039264   1.559854     0.67   0.505    -2.017995    4.096522
+         _IFE13_3 |  -1.812548   1.508707    -1.20   0.230     -4.76956    1.144465
+         _IFE13_4 |  -4.983682   1.598125    -3.12   0.002    -8.115949   -1.851414
+         _IFE13_5 |  -1.012736   1.214469    -0.83   0.404    -3.393051    1.367578
+         _IFE13_6 |  -7.220619   4.100541    -1.76   0.078    -15.25753    .8162939
+         _IFE13_7 |   2.831964     1.3091     2.16   0.031      .266175    5.397752
+         _IFE13_8 |  -.4663633   1.410731    -0.33   0.741    -3.231346    2.298619
+         _IFE13_9 |  -5.065016   2.378228    -2.13   0.033    -9.726258   -.4037741
+        _IFE13_10 |   2.857965   3.292951     0.87   0.385    -3.596101    9.312032
+        _IFE13_11 |  -1.517291   1.817135    -0.83   0.404    -5.078811    2.044229
+        _IFE13_12 |  -5.347134   2.710362    -1.97   0.049    -10.65934    -.034923
+            _cons |     30.877   23.92105     1.29   0.197    -16.00739     77.7614
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              9.940
+                                                   Chi-sq(1) P-val =    0.0016
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                7.890
+                         (Kleibergen-Paap rk Wald F statistic):         10.332
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: elevation_range ln_ma_1789_ba_own_dist_default _IFE13_2
+                      _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8
+                      _IFE13_9 _IFE13_10 _IFE13_11 _IFE13_12
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0513***       0.0578***        0.447**         0.731** 
+                 (0.0153)        (0.0192)         (0.199)         (0.298)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.112           0.139           0.029           0.100   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: ivreg2 ALTjacheres1852 (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789_ba_
+> own_dist_default  if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      11.64    0.0008 |       11.89   0.0006 |       11.64
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=10.50    P-val=0.0012
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      10.63
+Kleibergen-Paap Wald rk F statistic                                11.64
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=       3.92     P-val=0.0491
+Anderson-Rubin Wald test           Chi-sq(1)=      4.00     P-val=0.0454
+Stock-Wright LM S statistic        Chi-sq(1)=      4.22     P-val=0.0400
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    19.92
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  1.943815787                Centered R2   =   0.1413
+Total (uncentered) SS   =  9.836390098                Uncentered R2 =   0.8303
+Residual SS             =  1.669130241                Root MSE      =   .09276
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTjacheres1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    -.01059   .0057019    -1.86   0.063    -.0217655    .0005855
+        wheatsuit |   .0102242   .0089809     1.14   0.255    -.0073781    .0278265
+ln_ma_1789_ba_o~t |  -.0772472   .0427981    -1.80   0.071      -.16113    .0066356
+            _cons |   1.269536   .5366787     2.37   0.018     .2176652    2.321407
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             10.503
+                                                   Chi-sq(1) P-val =    0.0012
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               10.628
+                         (Kleibergen-Paap rk Wald F statistic):         11.643
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: xi: ivreg2 ALTjacheres1852 (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789
+> _ba_own_dist_default i.FE13  if sample==1, robust ffirst
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      11.75    0.0008 |       12.74   0.0004 |       11.75
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.74    P-val=0.0006
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       8.54
+Kleibergen-Paap Wald rk F statistic                                11.75
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       8.64     P-val=0.0037
+Anderson-Rubin Wald test           Chi-sq(1)=      9.37     P-val=0.0022
+Stock-Wright LM S statistic        Chi-sq(1)=     10.14     P-val=0.0014
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =     8.18
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  1.943815787                Centered R2   =   0.0407
+Total (uncentered) SS   =  9.836390098                Uncentered R2 =   0.8104
+Residual SS             =   1.86472412                Root MSE      =   .09804
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTjacheres1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |  -.0202678   .0078534    -2.58   0.010    -.0356601   -.0048755
+        wheatsuit |  -.0036561   .0076599    -0.48   0.633    -.0186692    .0113571
+ln_ma_1789_ba_o~t |  -.0401112   .0492171    -0.81   0.415     -.136575    .0563526
+         _IFE13_2 |  -.0331883   .0372473    -0.89   0.373    -.1061917    .0398152
+         _IFE13_3 |  -.0341256   .0406648    -0.84   0.401    -.1138271    .0455759
+         _IFE13_4 |   .0785907   .0411635     1.91   0.056    -.0020883    .1592698
+         _IFE13_5 |   .1003453   .0309294     3.24   0.001     .0397247    .1609659
+         _IFE13_6 |   .1953058   .1072528     1.82   0.069    -.0149058    .4055174
+         _IFE13_7 |   .0485541   .0319112     1.52   0.128    -.0139907    .1110989
+         _IFE13_8 |  -.0813543   .0459157    -1.77   0.076    -.1713474    .0086388
+         _IFE13_9 |   .1026242   .0495804     2.07   0.038     .0054484       .1998
+        _IFE13_10 |   .1035482   .0680754     1.52   0.128     -.029877    .2369735
+        _IFE13_11 |   .1442167   .0399277     3.61   0.000     .0659599    .2224736
+        _IFE13_12 |    .110248   .0665529     1.66   0.098    -.0201933    .2406893
+            _cons |    .812969   .6446975     1.26   0.207    -.4506148    2.076553
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.740
+                                                   Chi-sq(1) P-val =    0.0006
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                8.538
+                         (Kleibergen-Paap rk Wald F statistic):         11.753
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default _IFE13_2
+                      _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8
+                      _IFE13_9 _IFE13_10 _IFE13_11 _IFE13_12
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: ivreg2 ALTprairies1852 (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789_ba_
+> own_dist_default  if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      11.64    0.0008 |       11.89   0.0006 |       11.64
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=10.50    P-val=0.0012
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      10.63
+Kleibergen-Paap Wald rk F statistic                                11.64
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=       5.02     P-val=0.0261
+Anderson-Rubin Wald test           Chi-sq(1)=      5.13     P-val=0.0235
+Stock-Wright LM S statistic        Chi-sq(1)=      4.29     P-val=0.0382
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    16.38
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  .6837922941                Centered R2   =   0.1775
+Total (uncentered) SS   =  2.574228525                Uncentered R2 =   0.7815
+Residual SS             =  .5624103195                Root MSE      =   .05384
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTprairies1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .006157   .0029487     2.09   0.037     .0003777    .0119363
+        wheatsuit |  -.0093683   .0043922    -2.13   0.033    -.0179768   -.0007597
+ln_ma_1789_ba_o~t |   .0314439   .0204795     1.54   0.125    -.0086952     .071583
+            _cons |  -.3271566   .2539252    -1.29   0.198    -.8248408    .1705276
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             10.503
+                                                   Chi-sq(1) P-val =    0.0012
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               10.628
+                         (Kleibergen-Paap rk Wald F statistic):         11.643
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est3 stored)
+
+. eststo: xi: ivreg2 ALTprairies1852 (super1adj=fr_bishop_dist) wheatsuit ln_ma_1789
+> _ba_own_dist_default i.FE13  if sample==1, robust ffirst
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      11.75    0.0008 |       12.74   0.0004 |       11.75
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.74    P-val=0.0006
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       8.54
+Kleibergen-Paap Wald rk F statistic                                11.75
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       4.65     P-val=0.0323
+Anderson-Rubin Wald test           Chi-sq(1)=      5.04     P-val=0.0247
+Stock-Wright LM S statistic        Chi-sq(1)=      5.09     P-val=0.0241
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =    18.99
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  .6837922941                Centered R2   =   0.3435
+Total (uncentered) SS   =  2.574228525                Uncentered R2 =   0.8256
+Residual SS             =  .4489121439                Root MSE      =    .0481
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTprairies1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0078025    .003906     2.00   0.046     .0001469    .0154582
+        wheatsuit |  -.0084858   .0035533    -2.39   0.017    -.0154501   -.0015215
+ln_ma_1789_ba_o~t |  -.0037635   .0214569    -0.18   0.861    -.0458183    .0382914
+         _IFE13_2 |  -.0280408   .0208708    -1.34   0.179    -.0689469    .0128652
+         _IFE13_3 |   .0612825   .0206414     2.97   0.003     .0208261    .1017389
+         _IFE13_4 |  -.0467365   .0201009    -2.33   0.020    -.0861334   -.0073395
+         _IFE13_5 |   .0022323     .01774     0.13   0.900    -.0325374    .0370021
+         _IFE13_6 |  -.0652858   .0519642    -1.26   0.209    -.1671337    .0365621
+         _IFE13_7 |   -.014837   .0165959    -0.89   0.371    -.0473644    .0176903
+         _IFE13_8 |  -.0508407   .0217249    -2.34   0.019    -.0934208   -.0082607
+         _IFE13_9 |  -.0046806   .0268146    -0.17   0.861    -.0572362     .047875
+        _IFE13_10 |   .0172478   .0311203     0.55   0.579    -.0437468    .0782424
+        _IFE13_11 |   .0019238   .0216817     0.09   0.929    -.0405716    .0444192
+        _IFE13_12 |  -.0363023   .0262743    -1.38   0.167     -.087799    .0151944
+            _cons |   .1470897   .2770367     0.53   0.595    -.3958923    .6900717
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.740
+                                                   Chi-sq(1) P-val =    0.0006
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                8.538
+                         (Kleibergen-Paap rk Wald F statistic):         11.753
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default _IFE13_2
+                      _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8
+                      _IFE13_9 _IFE13_10 _IFE13_11 _IFE13_12
+Excluded instruments: fr_bishop_dist
+------------------------------------------------------------------------------
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj         -0.0106*        -0.0203***      0.00616**       0.00780** 
+                (0.00570)       (0.00785)       (0.00295)       (0.00391)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.128          -0.034           0.165           0.292   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *  Table 5: Column 2: IV (Just smallest quartile bishoprics)
+
+. **** lwheatsuit ******
+
+. * (1) wheat no FE's
+
+. eststo: ivreg2 lwheatyield (super1adj=dist_bishop_first_quartile) wheatsuit ln_ma_
+> 1789_ba_own_dist_default if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      54.24    0.0000 |       55.39   0.0000 |       54.24
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=38.00    P-val=0.0000
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      61.37
+Kleibergen-Paap Wald rk F statistic                                54.24
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=      51.55     P-val=0.0000
+Anderson-Rubin Wald test           Chi-sq(1)=     52.63     P-val=0.0000
+Stock-Wright LM S statistic        Chi-sq(1)=     36.18     P-val=0.0000
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    42.83
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  16.97385271                Centered R2   =   0.2816
+Total (uncentered) SS   =  1270.984279                Uncentered R2 =   0.9904
+Residual SS             =  12.19424097                Root MSE      =    .2507
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+      lwheatyield |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0428545   .0067506     6.35   0.000     .0296235    .0560854
+        wheatsuit |  -.0225577   .0154246    -1.46   0.144    -.0527893     .007674
+ln_ma_1789_ba_o~t |   .2776734   .0707979     3.92   0.000     .1389121    .4164347
+            _cons |  -1.377956   .9258697    -1.49   0.137    -3.192627     .436715
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             38.003
+                                                   Chi-sq(1) P-val =    0.0000
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               61.368
+                         (Kleibergen-Paap rk Wald F statistic):         54.245
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est1 stored)
+
+. * wheat, yes FE's
+
+. eststo: ivreg2 lwheatyield (super1adj=dist_bishop_first_quartile) wheatsuit ln_ma_
+> 1789_ba_own_dist_default i.FE13 if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      12.71    0.0005 |       13.78   0.0002 |       12.71
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.14    P-val=0.0008
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       6.61
+Kleibergen-Paap Wald rk F statistic                                12.71
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       0.21     P-val=0.6508
+Anderson-Rubin Wald test           Chi-sq(1)=      0.22     P-val=0.6369
+Stock-Wright LM S statistic        Chi-sq(1)=      0.25     P-val=0.6138
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =    33.24
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  16.97385271                Centered R2   =   0.6203
+Total (uncentered) SS   =  1270.984279                Uncentered R2 =   0.9949
+Residual SS             =  6.444558552                Root MSE      =    .1823
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+      lwheatyield |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0073061    .015085     0.48   0.628    -.0222599    .0368722
+        wheatsuit |  -.0237956   .0153533    -1.55   0.121    -.0538874    .0062962
+ln_ma_1789_ba_o~t |   .1289769   .0906454     1.42   0.155    -.0486848    .3066385
+                  |
+             FE13 |
+               2  |  -.1886563   .0677409    -2.78   0.005     -.321426   -.0558867
+               3  |   .2611052   .0821516     3.18   0.001     .1000911    .4221194
+               4  |   .0722542   .0945618     0.76   0.445    -.1130836     .257592
+               5  |  -.0934232   .0560995    -1.67   0.096    -.2033762    .0165299
+               6  |   .3373226   .2003566     1.68   0.092    -.0553691    .7300144
+               7  |   .0148131   .0598089     0.25   0.804    -.1024103    .1320364
+               8  |   .1808886   .0979639     1.85   0.065    -.0111171    .3728943
+               9  |   .1197258   .1203847     0.99   0.320    -.1162239    .3556754
+              10  |   .4196859   .1292489     3.25   0.001     .1663627    .6730091
+              11  |   .1361117   .0853714     1.59   0.111    -.0312131    .3034365
+              12  |  -.0106873    .099317    -0.11   0.914     -.205345    .1839704
+                  |
+            _cons |   .7704877   1.168979     0.66   0.510     -1.52067    3.061645
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.139
+                                                   Chi-sq(1) P-val =    0.0008
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                6.607
+                         (Kleibergen-Paap rk Wald F statistic):         12.711
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default 2.FE13 3.FE13
+                      4.FE13 5.FE13 6.FE13 7.FE13 8.FE13 9.FE13 10.FE13 11.FE13
+                      12.FE13
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est2 stored)
+
+. esttab, replace se k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+              lwheatyield     lwheatyield   
+--------------------------------------------
+super1adj          0.0429***      0.00731   
+                (0.00675)        (0.0151)   
+--------------------------------------------
+N                     194             194   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. **** fabriques_25kbuffer ******
+
+. * (3) fabriques, no FE's
+
+. eststo: ivreg2 fabriques_25kbuffer (super1adj=dist_bishop_first_quartile) elevatio
+> n_range ln_ma_1789_ba_own_dist_default  if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      41.73    0.0000 |       42.60   0.0000 |       41.73
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=32.06    P-val=0.0000
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      65.52
+Kleibergen-Paap Wald rk F statistic                                41.73
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=      19.67     P-val=0.0000
+Anderson-Rubin Wald test           Chi-sq(1)=     20.08     P-val=0.0000
+Stock-Wright LM S statistic        Chi-sq(1)=     19.63     P-val=0.0000
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    12.58
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  3706.438144                Centered R2   =  -0.0152
+Total (uncentered) SS   =         9357                Uncentered R2 =   0.5979
+Residual SS             =  3762.801952                Root MSE      =    4.404
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+fabriques_25kbu~r |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .5152062   .1369956     3.76   0.000     .2466997    .7837128
+  elevation_range |  -.0008909   .0005723    -1.56   0.120    -.0020126    .0002308
+ln_ma_1789_ba_o~t |  -1.943196    1.36939    -1.42   0.156    -4.627152    .7407591
+            _cons |   29.04129     18.315     1.59   0.113    -6.855453    64.93803
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             32.055
+                                                   Chi-sq(1) P-val =    0.0000
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               65.523
+                         (Kleibergen-Paap rk Wald F statistic):         41.726
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: elevation_range ln_ma_1789_ba_own_dist_default
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est1 stored)
+
+. * (4) fabriques, yes FE's
+
+. eststo: ivreg2 fabriques_25kbuffer (super1adj=dist_bishop_first_quartile) elevatio
+> n_range ln_ma_1789_ba_own_dist_default i.FE13  if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      10.59    0.0014 |       11.48   0.0007 |       10.59
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=9.54     P-val=0.0020
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       5.95
+Kleibergen-Paap Wald rk F statistic                                10.59
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       5.85     P-val=0.0166
+Anderson-Rubin Wald test           Chi-sq(1)=      6.34     P-val=0.0118
+Stock-Wright LM S statistic        Chi-sq(1)=      6.32     P-val=0.0119
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =     6.36
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  3706.438144                Centered R2   =   0.1370
+Total (uncentered) SS   =         9357                Uncentered R2 =   0.6582
+Residual SS             =  3198.638097                Root MSE      =    4.061
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+fabriques_25kbu~r |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .760305   .3661349     2.08   0.038     .0426938    1.477916
+  elevation_range |  -.0016328   .0009962    -1.64   0.101    -.0035852    .0003196
+ln_ma_1789_ba_o~t |  -2.026472   1.896375    -1.07   0.285    -5.743299    1.690355
+                  |
+             FE13 |
+               2  |   1.112256   1.666274     0.67   0.504    -2.153581    4.378094
+               3  |  -1.840847    1.53139    -1.20   0.229    -4.842316    1.160622
+               4  |   -5.08663   1.771341    -2.87   0.004    -8.558394   -1.614865
+               5  |  -.9916742   1.252099    -0.79   0.428    -3.445744    1.462395
+               6  |  -7.600135    5.03083    -1.51   0.131    -17.46038    2.260111
+               7  |   2.842021    1.34794     2.11   0.035     .2001069    5.483935
+               8  |  -.3923319   1.599416    -0.25   0.806    -3.527129    2.742465
+               9  |  -5.197596   2.507453    -2.07   0.038    -10.11211   -.2830786
+              10  |   2.666336   3.586283     0.74   0.457     -4.36265    9.695322
+              11  |  -1.609408   1.930043    -0.83   0.404    -5.392224    2.173407
+              12  |  -5.413948   2.845708    -1.90   0.057    -10.99143    .1635365
+                  |
+            _cons |   30.39244   25.75163     1.18   0.238    -20.07981     80.8647
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):              9.538
+                                                   Chi-sq(1) P-val =    0.0020
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                5.946
+                         (Kleibergen-Paap rk Wald F statistic):         10.595
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: elevation_range ln_ma_1789_ba_own_dist_default 2.FE13
+                      3.FE13 4.FE13 5.FE13 6.FE13 7.FE13 8.FE13 9.FE13 10.FE13
+                      11.FE13 12.FE13
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est2 stored)
+
+. esttab, replace se k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+             fab~5kbuffer    fab~5kbuffer   
+--------------------------------------------
+super1adj           0.515***        0.760** 
+                  (0.137)         (0.366)   
+--------------------------------------------
+N                     194             194   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. **** Fallow1852 ******
+
+. * (5) fallow, no FE's
+
+. eststo: ivreg2 ALTjacheres1852 (super1adj=dist_bishop_first_quartile) wheatsuit ln
+> _ma_1789_ba_own_dist_default if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      54.24    0.0000 |       55.39   0.0000 |       54.24
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=38.00    P-val=0.0000
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      61.37
+Kleibergen-Paap Wald rk F statistic                                54.24
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=      18.10     P-val=0.0000
+Anderson-Rubin Wald test           Chi-sq(1)=     18.48     P-val=0.0000
+Stock-Wright LM S statistic        Chi-sq(1)=     14.87     P-val=0.0001
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    23.21
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  1.943815787                Centered R2   =   0.1585
+Total (uncentered) SS   =  9.836390098                Uncentered R2 =   0.8337
+Residual SS             =  1.635759487                Root MSE      =   .09182
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTjacheres1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |  -.0101351   .0025654    -3.95   0.000    -.0151633    -.005107
+        wheatsuit |   .0107667   .0060714     1.77   0.076    -.0011331    .0226665
+ln_ma_1789_ba_o~t |  -.0796747   .0314083    -2.54   0.011    -.1412339   -.0181156
+            _cons |   1.297608   .4168238     3.11   0.002     .4806482    2.114567
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             38.003
+                                                   Chi-sq(1) P-val =    0.0000
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               61.368
+                         (Kleibergen-Paap rk Wald F statistic):         54.245
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est1 stored)
+
+. * (6) fallow, yes FE's
+
+. eststo: ivreg2 ALTjacheres1852 (super1adj=dist_bishop_first_quartile) wheatsuit ln
+> _ma_1789_ba_own_dist_default i.FE13 if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      12.71    0.0005 |       13.78   0.0002 |       12.71
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.14    P-val=0.0008
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       6.61
+Kleibergen-Paap Wald rk F statistic                                12.71
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       2.27     P-val=0.1336
+Anderson-Rubin Wald test           Chi-sq(1)=      2.46     P-val=0.1167
+Stock-Wright LM S statistic        Chi-sq(1)=      2.68     P-val=0.1015
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =     7.65
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  1.943815787                Centered R2   =   0.0568
+Total (uncentered) SS   =  9.836390098                Uncentered R2 =   0.8136
+Residual SS             =  1.833325121                Root MSE      =   .09721
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTjacheres1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0122674   .0093935     1.31   0.192    -.0061435    .0306782
+        wheatsuit |   .0084985   .0080699     1.05   0.292    -.0073182    .0243152
+ln_ma_1789_ba_o~t |  -.0473762     .05082    -0.93   0.351    -.1469815    .0522291
+                  |
+             FE13 |
+               2  |   .0426721   .0411638     1.04   0.300    -.0380074    .1233516
+               3  |  -.0445635   .0410767    -1.08   0.278    -.1250723    .0359452
+               4  |  -.0386749   .0453943    -0.85   0.394     -.127646    .0502963
+               5  |   .1343316   .0302781     4.44   0.000     .0749876    .1936756
+               6  |  -.2085931   .1262551    -1.65   0.099    -.4560486    .0388623
+               7  |   .0733203   .0310387     2.36   0.018     .0124855    .1341552
+               8  |   .0118365   .0467655     0.25   0.800    -.0798222    .1034951
+               9  |  -.0386292   .0517656    -0.75   0.456     -.140088    .0628296
+              10  |   -.107539   .0709762    -1.52   0.130    -.2466497    .0315718
+              11  |   .0438622    .043735     1.00   0.316    -.0418568    .1295813
+              12  |   .0500817   .0485601     1.03   0.302    -.0450943    .1452578
+                  |
+            _cons |   .7285629   .6661753     1.09   0.274    -.5771166    2.034242
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.139
+                                                   Chi-sq(1) P-val =    0.0008
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                6.607
+                         (Kleibergen-Paap rk Wald F statistic):         12.711
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default 2.FE13 3.FE13
+                      4.FE13 5.FE13 6.FE13 7.FE13 8.FE13 9.FE13 10.FE13 11.FE13
+                      12.FE13
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est2 stored)
+
+. esttab, replace se k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+             ALTjach~1852    ALTjach~1852   
+--------------------------------------------
+super1adj         -0.0101***       0.0123   
+                (0.00257)       (0.00939)   
+--------------------------------------------
+N                     194             194   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. **** prairies ******
+
+. * (7) prairies, no FE's
+
+. eststo: ivreg2 ALTprairies1852 (super1adj=dist_bishop_first_quartile) wheatsuit ln
+> _ma_1789_ba_own_dist_default if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   190)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   190)
+super1adj    |      54.24    0.0000 |       55.39   0.0000 |       54.24
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=38.00    P-val=0.0000
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                      61.37
+Kleibergen-Paap Wald rk F statistic                                54.24
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,190)=      25.50     P-val=0.0000
+Anderson-Rubin Wald test           Chi-sq(1)=     26.04     P-val=0.0000
+Stock-Wright LM S statistic        Chi-sq(1)=     20.01     P-val=0.0000
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =          4
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =          4
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F(  3,   190) =    18.70
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  .6837922941                Centered R2   =   0.1524
+Total (uncentered) SS   =  2.574228525                Uncentered R2 =   0.7749
+Residual SS             =  .5795709289                Root MSE      =   .05466
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTprairies1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0065602   .0014413     4.55   0.000     .0037354    .0093851
+        wheatsuit |  -.0088873   .0030914    -2.87   0.004    -.0149464   -.0028283
+ln_ma_1789_ba_o~t |   .0292918   .0153523     1.91   0.056    -.0007982    .0593819
+            _cons |  -.3022698   .2004033    -1.51   0.131    -.6950532    .0905135
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             38.003
+                                                   Chi-sq(1) P-val =    0.0000
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):               61.368
+                         (Kleibergen-Paap rk Wald F statistic):         54.245
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est1 stored)
+
+. * (8) prairies, yes FE's
+
+. eststo: ivreg2 ALTprairies1852 (super1adj=dist_bishop_first_quartile) wheatsuit ln
+> _ma_1789_ba_own_dist_default i.FE13 if sample==1, robust ffirst
+
+
+Summary results for first-stage regressions
+-------------------------------------------
+
+                                           (Underid)            (Weak id)
+Variable     | F(  1,   179)  P-val | SW Chi-sq(  1) P-val | SW F(  1,   179)
+super1adj    |      12.71    0.0005 |       13.78   0.0002 |       12.71
+
+NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+Underidentification test
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+Kleibergen-Paap rk LM statistic          Chi-sq(1)=11.14    P-val=0.0008
+
+Weak identification test
+Ho: equation is weakly identified
+Cragg-Donald Wald F statistic                                       6.61
+Kleibergen-Paap Wald rk F statistic                                12.71
+
+Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+                                   10% maximal IV size             16.38
+                                   15% maximal IV size              8.96
+                                   20% maximal IV size              6.66
+                                   25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+Weak-instrument-robust inference
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+Anderson-Rubin Wald test           F(1,179)=       1.32     P-val=0.2529
+Anderson-Rubin Wald test           Chi-sq(1)=      1.43     P-val=0.2324
+Stock-Wright LM S statistic        Chi-sq(1)=      1.71     P-val=0.1907
+
+NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  =        194
+Number of regressors                 K  =         15
+Number of endogenous regressors      K1 =          1
+Number of instruments                L  =         15
+Number of excluded instruments       L1 =          1
+
+IV (2SLS) estimation
+--------------------
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+                                                      Number of obs =      194
+                                                      F( 14,   179) =    21.26
+                                                      Prob > F      =   0.0000
+Total (centered) SS     =  .6837922941                Centered R2   =   0.4314
+Total (uncentered) SS   =  2.574228525                Uncentered R2 =   0.8490
+Residual SS             =   .388808195                Root MSE      =   .04477
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+  ALTprairies1852 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0059283   .0048085     1.23   0.218    -.0034963    .0153528
+        wheatsuit |   -.009186   .0035449    -2.59   0.010    -.0161338   -.0022381
+ln_ma_1789_ba_o~t |  -.0033449   .0204971    -0.16   0.870    -.0435186    .0368287
+                  |
+             FE13 |
+               2  |  -.0324109   .0216597    -1.50   0.135    -.0748631    .0100413
+               3  |   .0618838   .0203048     3.05   0.002     .0220871    .1016805
+               4  |  -.0399811   .0224818    -1.78   0.075    -.0840447    .0040825
+               5  |   .0002745   .0172453     0.02   0.987    -.0335257    .0340747
+               6  |  -.0420183   .0673256    -0.62   0.533    -.1739741    .0899375
+               7  |  -.0162637   .0160885    -1.01   0.312    -.0477966    .0152691
+               8  |  -.0562092   .0216478    -2.60   0.009     -.098638   -.0137803
+               9  |   .0034566   .0308361     0.11   0.911     -.056981    .0638942
+              10  |   .0294079   .0384008     0.77   0.444    -.0458562     .104672
+              11  |    .007705   .0238589     0.32   0.747    -.0390576    .0544676
+              12  |  -.0328363   .0248643    -1.32   0.187    -.0815694    .0158968
+                  |
+            _cons |   .1519521    .268688     0.57   0.572    -.3746667    .6785709
+-----------------------------------------------------------------------------------
+Underidentification test (Kleibergen-Paap rk LM statistic):             11.139
+                                                   Chi-sq(1) P-val =    0.0008
+------------------------------------------------------------------------------
+Weak identification test (Cragg-Donald Wald F statistic):                6.607
+                         (Kleibergen-Paap rk Wald F statistic):         12.711
+Stock-Yogo weak ID test critical values: 10% maximal IV size             16.38
+                                         15% maximal IV size              8.96
+                                         20% maximal IV size              6.66
+                                         25% maximal IV size              5.53
+Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+------------------------------------------------------------------------------
+Hansen J statistic (overidentification test of all instruments):         0.000
+                                                 (equation exactly identified)
+------------------------------------------------------------------------------
+Instrumented:         super1adj
+Included instruments: wheatsuit ln_ma_1789_ba_own_dist_default 2.FE13 3.FE13
+                      4.FE13 5.FE13 6.FE13 7.FE13 8.FE13 9.FE13 10.FE13 11.FE13
+                      12.FE13
+Excluded instruments: dist_bishop_first_quartile
+------------------------------------------------------------------------------
+(est2 stored)
+
+. esttab, replace se k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+             ALTprai~1852    ALTprai~1852   
+--------------------------------------------
+super1adj         0.00656***      0.00593   
+                (0.00144)       (0.00481)   
+--------------------------------------------
+N                     194             194   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 3: Conley Standard Errors
+
+. *create a constant and a year variable
+
+. gen const = 1
+
+. gen year = 1800
+
+. *run the regressions using various spatial cut-offs
+
+. *Conley SE's with cut-off at 100km for robustness table in text
+
+. *lwheatyield 100km
+
+. ols_spatial_HAC lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_default con
+> st  const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(100) lag(0
+> ) dropvar
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lwheatyield
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+      lwheatyield |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0199218   .0047596     4.19   0.000     .0105333    .0293104
+        wheatsuit |  -.0499079   .0152872    -3.26   0.001    -.0800623   -.0197535
+ln_ma_1789_ba_o~t |   .4000587   .1342382     2.98   0.003     .1352701    .6648472
+            const |  -2.793226   1.821306    -1.53   0.127    -6.385805    .7993522
+-----------------------------------------------------------------------------------
+
+. *lwheatyield FE's 100km
+
+. xi: ols_spatial_HAC lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_default
+>  const i.FE13 const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(
+> 100) lag(0) dropvar
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: lwheatyield
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default const _IF
+> E13_2 _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8 _IFE13_9 _IFE13_10 _IF
+> E13_11 _IFE13_12
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+      lwheatyield |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0094148   .0041693     2.26   0.025     .0011874    .0176422
+        wheatsuit |  -.0230079     .01964    -1.17   0.243    -.0617635    .0157478
+ln_ma_1789_ba_o~t |    .128506   .1485527     0.87   0.388    -.1646339    .4216459
+            const |   .7650172   1.938631     0.39   0.694    -3.060495    4.590529
+         _IFE13_2 |  -.1837397    .068263    -2.69   0.008    -.3184435   -.0490358
+         _IFE13_3 |   .2604287   .1160447     2.24   0.026     .0314371    .4894204
+         _IFE13_4 |    .064654   .1383423     0.47   0.641    -.2083375    .3376455
+         _IFE13_5 |  -.0912204   .0665211    -1.37   0.172    -.2224869    .0400461
+         _IFE13_6 |   .3111451   .1154241     2.70   0.008     .0833782     .538912
+         _IFE13_7 |   .0164182   .0545625     0.30   0.764    -.0912503    .1240867
+         _IFE13_8 |   .1869285   .0833087     2.24   0.026      .022535     .351322
+         _IFE13_9 |   .1105708   .0868725     1.27   0.205    -.0608551    .2819968
+        _IFE13_10 |   .4060049     .11691     3.47   0.001     .1753058    .6367041
+        _IFE13_11 |   .1296075   .0903232     1.43   0.153    -.0486276    .3078427
+        _IFE13_12 |  -.0145868   .1387391    -0.11   0.916    -.2883614    .2591879
+-----------------------------------------------------------------------------------
+
+. *fabriques_25kbuffer 100km
+
+. ols_spatial_HAC fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_own_di
+> st_default const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(100
+> ) lag(0) dropvar
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: fabriques_25kbuffer
+INDEPENDANT VARIABLES:  super1adj elevation_range ln_ma_1789_ba_own_dist_default con
+> st
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+fabriques_25kbu~r |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .2075477    .091336     2.27   0.024     .0273849    .3877105
+  elevation_range |  -.0016993   .0006451    -2.63   0.009    -.0029717   -.0004268
+ln_ma_1789_ba_o~t |  -.7769127   2.494649    -0.31   0.756    -5.697679    4.143853
+            const |   15.47753   33.93074     0.46   0.649    -51.45183    82.40688
+-----------------------------------------------------------------------------------
+
+. *fabriques_25kbuffer FE's 100km
+
+. xi: ols_spatial_HAC fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_ow
+> n_dist_default i.FE13 const if sample==1, lat(latitude) lon(longitude) t(year) p(i
+> d) dist(100) lag(0) dropvar
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: fabriques_25kbuffer
+INDEPENDANT VARIABLES:  super1adj elevation_range ln_ma_1789_ba_own_dist_default _IF
+> E13_2 _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8 _IFE13_9 _IFE13_10 _IF
+> E13_11 _IFE13_12 const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+fabriques_25kbu~r |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .1642743   .0737348     2.23   0.027     .0187731    .3097755
+  elevation_range |  -.0023996   .0005977    -4.01   0.000    -.0035791     -.00122
+ln_ma_1789_ba_o~t |  -2.551559     1.3758    -1.85   0.065    -5.266432    .1633142
+         _IFE13_2 |  -.3680824   1.607455    -0.23   0.819    -3.540081    2.803917
+         _IFE13_3 |  -1.266919   1.332539    -0.95   0.343    -3.896427    1.362588
+         _IFE13_4 |  -2.998777   1.421469    -2.11   0.036     -5.80377    -.193784
+         _IFE13_5 |  -1.418825    1.50925    -0.94   0.348    -4.397037    1.559387
+         _IFE13_6 |   .0966971    1.63714     0.06   0.953    -3.133879    3.327274
+         _IFE13_7 |   2.638054   1.407893     1.87   0.063      -.14015    5.416257
+         _IFE13_8 |  -1.893738   1.332454    -1.42   0.157    -4.523077    .7355999
+         _IFE13_9 |  -2.508793   1.789101    -1.40   0.163    -6.039235    1.021649
+        _IFE13_10 |    6.55271   2.561927     2.56   0.011     1.497246    11.60817
+        _IFE13_11 |   .2588002   1.310787     0.20   0.844    -2.327783    2.845383
+        _IFE13_12 |  -4.058911   1.511658    -2.69   0.008    -7.041874   -1.075948
+            const |   40.21963   18.45347     2.18   0.031     3.805302    76.63395
+-----------------------------------------------------------------------------------
+
+. *ALTjacheres1852 100km
+
+. ols_spatial_HAC ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_default
+>  const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(100) lag(0) d
+> ropvar
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: ALTjacheres1852
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+  ALTjacheres1852 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |  -.0039983   .0014541    -2.75   0.007    -.0068665   -.0011301
+        wheatsuit |   .0180857   .0089878     2.01   0.046      .000357    .0358143
+ln_ma_1789_ba_o~t |  -.1124252   .0509095    -2.21   0.028    -.2128455   -.0120048
+            const |   1.676336   .6998075     2.40   0.018     .2959461    3.056726
+-----------------------------------------------------------------------------------
+
+. *ALTjacheres1852 FE's 100km
+
+. xi: ols_spatial_HAC ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_def
+> ault i.FE13 const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(10
+> 0) lag(0) dropvar
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: ALTjacheres1852
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default _IFE13_2 
+> _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8 _IFE13_9 _IFE13_10 _IFE13_11
+>  _IFE13_12 const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+  ALTjacheres1852 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |  -.0038418   .0013244    -2.90   0.004    -.0064552   -.0012284
+        wheatsuit |   .0024804   .0071062     0.35   0.727    -.0115424    .0165032
+ln_ma_1789_ba_o~t |  -.0437791    .056917    -0.77   0.443    -.1560936    .0685355
+         _IFE13_2 |   .0051113   .0346511     0.15   0.883    -.0632658    .0734884
+         _IFE13_3 |  -.0393954   .0393663    -1.00   0.318    -.1170772    .0382864
+         _IFE13_4 |   .0193869   .0482923     0.40   0.689    -.0759086    .1146824
+         _IFE13_5 |   .1175039   .0349692     3.36   0.001      .048499    .1865088
+         _IFE13_6 |  -.0086105   .0417384    -0.21   0.837    -.0909732    .0737522
+         _IFE13_7 |   .0610578   .0407607     1.50   0.136    -.0193755    .1414911
+         _IFE13_8 |  -.0343051   .0377043    -0.91   0.364    -.1087071    .0400969
+         _IFE13_9 |   .0313097   .0283104     1.11   0.270    -.0245554    .0871747
+        _IFE13_10 |  -.0030233   .0349327    -0.09   0.931    -.0719562    .0659097
+        _IFE13_11 |   .0935508   .0254708     3.67   0.000     .0432891    .1438126
+        _IFE13_12 |   .0798719   .0358627     2.23   0.027     .0091038      .15064
+            const |   .7703549   .7634327     1.01   0.314    -.7361309    2.276841
+-----------------------------------------------------------------------------------
+
+. *ALTprairies1852 100km
+
+. ols_spatial_HAC ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_default
+>  const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(100) lag(0) d
+> ropvar
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: ALTprairies1852
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+  ALTprairies1852 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .002667   .0012101     2.20   0.029       .00028    .0050541
+        wheatsuit |  -.0135305    .004474    -3.02   0.003    -.0223555   -.0047055
+ln_ma_1789_ba_o~t |   .0500688    .023474     2.13   0.034     .0037658    .0963719
+            const |  -.5425362    .302279    -1.79   0.074     -1.13879    .0537177
+-----------------------------------------------------------------------------------
+
+. *ALTprairies1852 FE's 100km
+
+. xi: ols_spatial_HAC ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_def
+> ault i.FE13 const if sample==1, lat(latitude) lon(longitude) t(year) p(id) dist(10
+> 0) lag(0) dropvar
+i.FE13            _IFE13_1-12         (naturally coded; _IFE13_1 omitted)
+ 
+OLS REGRESSION
+ 
+SE CORRECTED FOR CROSS-SECTIONAL SPATIAL DEPENDANCE
+             AND PANEL-SPECIFIC SERIAL CORRELATION
+ 
+DEPENDANT VARIABLE: ALTprairies1852
+INDEPENDANT VARIABLES:  super1adj wheatsuit ln_ma_1789_ba_own_dist_default _IFE13_2 
+> _IFE13_3 _IFE13_4 _IFE13_5 _IFE13_6 _IFE13_7 _IFE13_8 _IFE13_9 _IFE13_10 _IFE13_11
+>  _IFE13_12 const
+ 
+SPATIAL CORRELATION KERNAL CUTOFF: 100 KM
+SERIAL CORRELATION KERNAL CUTOFF: 0 PERIODS
+-----------------------------------------------------------------------------------
+  ALTprairies1852 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .001601   .0006183     2.59   0.010     .0003809    .0028211
+        wheatsuit |  -.0108026   .0037545    -2.88   0.004    -.0182113   -.0033939
+ln_ma_1789_ba_o~t |  -.0023787   .0171741    -0.14   0.890    -.0362684    .0315111
+         _IFE13_2 |  -.0425007    .023309    -1.82   0.070    -.0884964    .0034951
+         _IFE13_3 |   .0632721   .0219901     2.88   0.004     .0198789    .1066653
+         _IFE13_4 |  -.0243844   .0166387    -1.47   0.145    -.0572177    .0084489
+         _IFE13_5 |  -.0042458    .026643    -0.16   0.874    -.0568206     .048329
+         _IFE13_6 |   .0117017    .032898     0.36   0.722    -.0532161    .0766195
+         _IFE13_7 |  -.0195577   .0220377    -0.89   0.376    -.0630449    .0239294
+         _IFE13_8 |  -.0686039     .02024    -3.39   0.001    -.1085437   -.0286642
+         _IFE13_9 |   .0222438   .0341598     0.65   0.516    -.0451639    .0896516
+        _IFE13_10 |   .0574833   .0226983     2.53   0.012     .0126926     .102274
+        _IFE13_11 |   .0210525    .024138     0.87   0.384    -.0265792    .0686842
+        _IFE13_12 |   -.024834    .022973    -1.08   0.281    -.0701667    .0204988
+            const |   .1631785   .2200047     0.74   0.459     -.270958    .5973149
+-----------------------------------------------------------------------------------
+
+. 
+. *Table 5: Column 4: Super2Adj (Including confiscations of Emigres)
+
+. eststo: quietly: reg lwheatyield super1adj super2adj wheatsuit ln_ma_1789_ba_own_d
+> ist_default if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg lwheatyield super1adj super2adj wheatsuit ln_ma_1789_ba_own_d
+> ist_default i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj  super2adj elevation_range ln_m
+> a_1789_ba_own_dist_default if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj  super2adj elevation_range ln_m
+> a_1789_ba_own_dist_default i.FE13  if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0200***      0.00890**         0.208***        0.152** 
+                (0.00337)       (0.00342)        (0.0640)        (0.0651)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.451           0.593           0.123           0.388   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj super2adj wheatsuit ln_ma_1789_ba_o
+> wn_dist_default if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTjacheres1852 super1adj super2adj wheatsuit ln_ma_1789_ba_o
+> wn_dist_default i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj super2adj wheatsuit ln_ma_1789_ba_o
+> wn_dist_default if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj super2adj wheatsuit ln_ma_1789_ba_o
+> wn_dist_default i.FE13 if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj        -0.00392***     -0.00390***      0.00273***      0.00145** 
+                (0.00106)       (0.00137)      (0.000698)      (0.000689)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.264           0.419           0.279           0.483   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Correlation between church confiscations and emigre confiscations is small and ag
+> gresively statistically insignificant.
+
+. pwcorr super1adj super2adj if sample==1, sig
+
+             | super1~j super2~j
+-------------+------------------
+   super1adj |   1.0000 
+             |
+             |
+   super2adj |   0.0426   1.0000 
+             |   0.5550
+             |
+
+. 
+. 
+. *Table 5: Column 5: Trim top and bottom 5%
+
+. sum super1adj if sample==1, detail
+
+         % district premier confiscations, adjusted
+                         (Bodinier)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%           .6              0
+10%            1              0       Obs                 194
+25%          1.7              0       Sum of Wgt.         194
+
+50%         4.25                      Mean           5.901546
+                        Largest       Std. Dev.      5.866913
+75%          7.7           25.2
+90%         12.5           25.5       Variance       34.42067
+95%         17.4           26.7       Skewness       2.179443
+99%         26.7           40.1       Kurtosis       9.841433
+
+. *5% is <0.6 or >17.4
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est1 stored)
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t i.FE13 if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est2 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est3 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default i.FE13  if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0311***       0.0172***        0.207**         0.182*  
+                (0.00474)       (0.00612)         (0.103)        (0.0941)   
+----------------------------------------------------------------------------
+N                     176             176             176             176   
+adj. R-sq           0.445           0.552           0.081           0.351   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault i.FE13 if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est2 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est3 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault i.FE13 if sample==1 & super1adj>0.6 & super1adj<17.4, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj        -0.00553***     -0.00703***      0.00462***      0.00343***
+                (0.00178)       (0.00191)      (0.000978)       (0.00122)   
+----------------------------------------------------------------------------
+N                     176             176             176             176   
+adj. R-sq           0.236           0.405           0.324           0.464   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 6: MA_bo
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_bo_own_dist_defaul
+> t if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_bo_own_dist_defaul
+> t i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_bo_o
+> wn_dist_default if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_bo_o
+> wn_dist_default i.FE13  if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0162***      0.00916***        0.192***        0.166** 
+                (0.00316)       (0.00340)        (0.0621)        (0.0668)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.529           0.599           0.122           0.385   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_bo_own_dist_de
+> fault if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_bo_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_bo_own_dist_de
+> fault if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_bo_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj        -0.00312***     -0.00375***      0.00200***      0.00154** 
+                (0.00112)       (0.00135)      (0.000687)      (0.000722)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.293           0.430           0.330           0.490   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 7: MA_ca
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ca_own_dist_defaul
+> t if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ca_own_dist_defaul
+> t i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ca_o
+> wn_dist_default  if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ca_o
+> wn_dist_default i.FE13  if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0231***      0.00991***        0.203***        0.153** 
+                (0.00380)       (0.00340)        (0.0633)        (0.0654)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.424           0.599           0.147           0.398   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ca_own_dist_de
+> fault if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ca_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ca_own_dist_de
+> fault if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ca_own_dist_de
+> fault i.FE13 if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj        -0.00490***     -0.00403***      0.00307***      0.00166** 
+                (0.00115)       (0.00137)      (0.000767)      (0.000734)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.239           0.433           0.256           0.481   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 8: Credit
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit livrets solde_restant ln_ma_1
+> 789_ba_own_dist_default if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit livrets solde_restant ln_ma_1
+> 789_ba_own_dist_default i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range livrets solde_r
+> estant wheatsuit ln_ma_1789_ba_own_dist_default if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range livrets solde_r
+> estant wheatsuit ln_ma_1789_ba_own_dist_default i.FE13  if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+              lwheatyield     lwheatyield    fab~5kbuffer    fab~5kbuffer   
+----------------------------------------------------------------------------
+super1adj          0.0190***      0.00877***        0.196***        0.147** 
+                (0.00339)       (0.00332)        (0.0673)        (0.0631)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.452           0.592           0.137           0.416   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit livrets solde_restant ln_
+> ma_1789_ba_own_dist_default if sample==1, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit livrets solde_restant ln_
+> ma_1789_ba_own_dist_default i.FE13 if sample==1, robust
+(est2 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit livrets solde_restant ln_
+> ma_1789_ba_own_dist_default if sample==1, robust
+(est3 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit livrets solde_restant ln_
+> ma_1789_ba_own_dist_default i.FE13 if sample==1, robust
+(est4 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+             ALTjach~1852    ALTjach~1852    ALTprai~1852    ALTprai~1852   
+----------------------------------------------------------------------------
+super1adj        -0.00322***     -0.00333**       0.00267***      0.00159** 
+                (0.00106)       (0.00129)      (0.000739)      (0.000729)   
+----------------------------------------------------------------------------
+N                     194             194             194             194   
+adj. R-sq           0.307           0.443           0.261           0.473   
+----------------------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 9: Condition on Average Auction Plot Price (from Big 4 regions)
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t avg_pric_1 if big4sample==1 & avg_pric_1~=0, robust
+(est1 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default  avg_pric_1  if big4sample==1 & avg_pric_1~=0, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+              lwheatyield    fab~5kbuffer   
+--------------------------------------------
+super1adj         0.00635**         0.250** 
+                (0.00240)         (0.111)   
+--------------------------------------------
+N                      40              40   
+adj. R-sq           0.155           0.040   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault avg_pric_1 if big4sample==1 & avg_pric_1~=0, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault avg_pric_1 if big4sample==1 & avg_pric_1~=0, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+             ALTjach~1852    ALTprai~1852   
+--------------------------------------------
+super1adj        -0.00320**      -0.00122   
+                (0.00123)      (0.000755)   
+--------------------------------------------
+N                      40              40   
+adj. R-sq           0.226           0.041   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 5: Column 10: Condition on Average Size of Church Plots (from Big 4 regions
+> )
+
+. eststo: quietly: reg lwheatyield super1adj wheatsuit ln_ma_1789_ba_own_dist_defaul
+> t  avg_total_ if big4sample==1 & avg_total_~=0, robust
+(est1 stored)
+
+. eststo: quietly: reg fabriques_25kbuffer super1adj elevation_range ln_ma_1789_ba_o
+> wn_dist_default  avg_total_  if big4sample==1 & avg_total_~=0, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+              lwheatyield    fab~5kbuffer   
+--------------------------------------------
+super1adj         0.00644**         0.202** 
+                (0.00246)        (0.0900)   
+--------------------------------------------
+N                      40              40   
+adj. R-sq           0.131           0.118   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg ALTjacheres1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault  avg_total_ if big4sample==1 & avg_total_~=0, robust
+(est1 stored)
+
+. eststo: quietly: reg ALTprairies1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_de
+> fault  avg_total_ if big4sample==1 & avg_total_~=0, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+             ALTjach~1852    ALTprai~1852   
+--------------------------------------------
+super1adj        -0.00438***     -0.00163*  
+               (0.000779)      (0.000822)   
+--------------------------------------------
+N                      40              40   
+adj. R-sq           0.556           0.137   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 6: Percent Land Confiscated in District and Average Farm Size
+
+. *Land Inequality: Average Farm Size in 1862
+
+. sum avg_farm_size_1862 if sample==1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+avg_far~1862 |        194    9.479565    5.244802   2.863643   23.14683
+
+. *Regression 1: 10% Quantile
+
+. qreg2 avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sam
+> ple==1,  cluster(deptid) q(.1)
+
+.1 Quantile regression
+R-squared = .10155045
+Number of obs = 194
+Objective function = .5859978
+
+Standard errors adjusted for 61 clusters in deptid
+-----------------------------------------------------------------------------------
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0530503   .0591467     0.90   0.371    -.0636181    .1697187
+        wheatsuit |  -.5253906    .249929    -2.10   0.037    -1.018383   -.0323986
+ln_ma_1789_ba_o~t |   2.437484   2.454038     0.99   0.322    -2.403176    7.278143
+            _cons |  -27.02692   33.78218    -0.80   0.425    -93.66322    39.60938
+-----------------------------------------------------------------------------------
+
+Parente-Santos Silva test for intra-cluster correlation
+         Ho: No intra-cluster correlation
+
+            T   =   7.873
+         P>|T|  =   0.000
+
+. *Regression 2: 25% Quantile
+
+. qreg2 avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sam
+> ple==1,  cluster(deptid) q(.25)
+
+.25 Quantile regression
+R-squared = .07948436
+Number of obs = 194
+Objective function = 1.267402
+
+Standard errors adjusted for 61 clusters in deptid
+-----------------------------------------------------------------------------------
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .0645243   .1074767     0.60   0.549    -.1474766    .2765251
+        wheatsuit |  -.4683158   .3943287    -1.19   0.236     -1.24614    .3095087
+ln_ma_1789_ba_o~t |   3.680474   1.871806     1.97   0.051    -.0117161    7.372664
+            _cons |  -42.82239   24.71172    -1.73   0.085    -91.56694     5.92217
+-----------------------------------------------------------------------------------
+
+Parente-Santos Silva test for intra-cluster correlation
+         Ho: No intra-cluster correlation
+
+            T   =  12.332
+         P>|T|  =   0.000
+
+. *Regression 3: 50% Quantile
+
+. qreg2 avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sam
+> ple==1,  cluster(deptid) q(.50)
+
+Median regression
+R-squared = .14505783
+Number of obs = 194
+Objective function = 1.8214468
+
+Standard errors adjusted for 61 clusters in deptid
+-----------------------------------------------------------------------------------
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .3586035    .224125     1.60   0.111    -.0834893    .8006964
+        wheatsuit |  -1.384803   .4604558    -3.01   0.003    -2.293065   -.4765415
+ln_ma_1789_ba_o~t |   1.404752   2.587468     0.54   0.588    -3.699101    6.508605
+            _cons |  -7.065386     35.147    -0.20   0.841    -76.39382    62.26305
+-----------------------------------------------------------------------------------
+
+Parente-Santos Silva test for intra-cluster correlation
+         Ho: No intra-cluster correlation
+
+            T   =   9.597
+         P>|T|  =   0.000
+
+. *Regression 4: 75% Quantile
+
+. qreg2 avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sam
+> ple==1,  cluster(deptid) q(.75)
+
+.75 Quantile regression
+R-squared = .13584814
+Number of obs = 194
+Objective function = 1.6181096
+
+Standard errors adjusted for 61 clusters in deptid
+-----------------------------------------------------------------------------------
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |    .615352   .2099833     2.93   0.004      .201154     1.02955
+        wheatsuit |  -1.423377   .5000641    -2.85   0.005    -2.409767    -.436986
+ln_ma_1789_ba_o~t |  -2.339087   3.462155    -0.68   0.500    -9.168285    4.490111
+            _cons |   45.54133   47.13146     0.97   0.335    -47.42681    138.5095
+-----------------------------------------------------------------------------------
+
+Parente-Santos Silva test for intra-cluster correlation
+         Ho: No intra-cluster correlation
+
+            T   =  10.890
+         P>|T|  =   0.000
+
+. *Regression 5: 90% Quantile
+
+. qreg2 avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sam
+> ple==1,  cluster(deptid) q(.90)
+
+.9 Quantile regression
+R-squared = .05882945
+Number of obs = 194
+Objective function = .91635424
+
+Standard errors adjusted for 61 clusters in deptid
+-----------------------------------------------------------------------------------
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .5468531   .2161853     2.53   0.012     .1204215    .9732847
+        wheatsuit |  -.2785144    .790224    -0.35   0.725    -1.837253    1.280225
+ln_ma_1789_ba_o~t |  -9.172194   3.305134    -2.78   0.006    -15.69166   -2.652725
+            _cons |   138.5773   44.58338     3.11   0.002     50.63531    226.5193
+-----------------------------------------------------------------------------------
+
+Parente-Santos Silva test for intra-cluster correlation
+         Ho: No intra-cluster correlation
+
+            T   =   9.032
+         P>|T|  =   0.000
+
+. *Regression 6: OLS
+
+. reg avg_farm_size_1862 super1adj wheatsuit ln_ma_1789_ba_own_dist_default if sampl
+> e==1,  cluster(deptid)
+
+Linear regression                               Number of obs     =        194
+                                                F(3, 60)          =       3.07
+                                                Prob > F          =     0.0343
+                                                R-squared         =     0.1484
+                                                Root MSE          =     4.8781
+
+                                     (Std. Err. adjusted for 61 clusters in deptid)
+-----------------------------------------------------------------------------------
+                  |               Robust
+avg_farm_siz~1862 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+        super1adj |   .2131492   .1328287     1.60   0.114    -.0525478    .4788463
+        wheatsuit |  -1.052318   .3799329    -2.77   0.007    -1.812297   -.2923388
+ln_ma_1789_ba_o~t |   .0318071   2.656348     0.01   0.990    -5.281679    5.345293
+            _cons |    11.7721   36.39313     0.32   0.747      -61.025    84.56921
+-----------------------------------------------------------------------------------
+
+. 
+. *Table 7: Percent Land Confiscated in District and Share Cropping
+
+. *Land Inequality: Percent Sharecroppers in 1852
+
+. *Regression 1: bivariate
+
+. eststo: quietly: reg sharemetayer1852 super1adj if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit
+
+. eststo: quietly: reg sharemetayer1852 super1adj wheatsuit if sample==1, robust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access
+
+. eststo: quietly: reg sharemetayer1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_d
+> efault if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             shareme~1852    shareme~1852    shareme~1852   
+------------------------------------------------------------
+super1adj         -0.0234***      -0.0211***      -0.0170***
+                (0.00370)       (0.00374)       (0.00363)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.176           0.195           0.268   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg sharemetayer1852 super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg sharemetayer1852 super1adj wheatsuit i.FE13 if sample==1, rob
+> ust
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg sharemetayer1852 super1adj wheatsuit ln_ma_1789_ba_own_dist_d
+> efault i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             shareme~1852    shareme~1852    shareme~1852   
+------------------------------------------------------------
+super1adj        -0.00941**      -0.00976**      -0.00977** 
+                (0.00380)       (0.00379)       (0.00380)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.473           0.473           0.470   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table 8: Percent Land Confiscated in District and Wheat Yields Over Time
+
+. *This table is replicated using the .do file "Table 8.do" located at the top level
+>  of the Replication Files folder.
+
+. 
+. 
+. *Appendix Tables and Figures
+
+. 
+. *Table A1: District Descriptive Statistics
+
+. sum super1adj lwheatyield lwheat_hect fabriques_25kbuffer elevation_range wheatsui
+> t ln_ma_1789_ba_own_dist_default ALTprairies1852 ALTjacheres1852 sharemetayer1852 
+> avg_farm_size_1862 fr_bishop_dist  if sample==1 & super1adj~=., separator(0)
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   super1adj |        194    5.901546    5.866913          0       40.1
+ lwheatyield |        194    2.542434    .2965593   1.894766   3.240641
+ lwheat_hect |        194    9.430261    .9338957   3.671479   10.68397
+fab~5kbuffer |        194    5.396907    4.382276          0         24
+elevation_~e |        194    473.9433    503.8787         54       3536
+   wheatsuit |        194    3.782438    1.213183   1.333333          8
+ln_ma_1789.. |        194    13.51518     .263104   13.00318    14.5178
+ALTprai~1852 |        194    .0987143    .0595228   .0019766   .2238594
+ALTjach~1852 |        194    .2017012    .1003573          0   .4309838
+shareme~1852 |        194    .3382105    .3236422          0   .9896303
+avg_far~1862 |        194    9.479565    5.244802   2.863643   23.14683
+fr_bishop_~t |        194     15694.1    15156.26          0   61592.25
+
+. 
+. *Table A2: Balance of Samples With vs. Without Data on Confiscations
+
+. eststo: quietly: reg sample wheatsuit , robust
+(est1 stored)
+
+. eststo: quietly: reg sample wheatsuit  i.FE13, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(wheatsuit)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+                   sample          sample   
+--------------------------------------------
+wheatsuit          0.0206         0.00796   
+                 (0.0184)        (0.0205)   
+--------------------------------------------
+N                     534             534   
+adj. R-sq           0.001           0.062   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg sample potatosuit , robust
+(est1 stored)
+
+. eststo: quietly: reg sample potatosuit  i.FE13, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(potatosuit)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+                   sample          sample   
+--------------------------------------------
+potatosuit         0.0266          0.0228   
+                 (0.0222)        (0.0252)   
+--------------------------------------------
+N                     534             534   
+adj. R-sq           0.001           0.063   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg sample elevation_range , robust
+(est1 stored)
+
+. eststo: quietly: reg sample elevation_range i.FE13, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(elevation_range)  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+                   sample          sample   
+--------------------------------------------
+elevation_~e   -0.0000190      -0.0000843*  
+              (0.0000348)     (0.0000441)   
+--------------------------------------------
+N                     534             534   
+adj. R-sq          -0.001           0.067   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg sample  ln_ma_1789_ba_own_dist_default  , robust
+(est1 stored)
+
+. eststo: quietly: reg sample  ln_ma_1789_ba_own_dist_default  i.FE13, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(ln_ma_1789_ba_own_dist_default)  star(* 0.10 ** 0.05 *** 
+> 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+                   sample          sample   
+--------------------------------------------
+ln_ma_1789..        0.183**         0.190   
+                 (0.0806)         (0.138)   
+--------------------------------------------
+N                     534             534   
+adj. R-sq           0.008           0.065   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. eststo: quietly: reg sample wheatsuit elevation_range potatosuit ln_ma_1789_ba_own
+> _dist_default  , robust
+(est1 stored)
+
+. eststo: quietly: reg sample wheatsuit elevation_range potatosuit ln_ma_1789_ba_own
+> _dist_default i.FE13, robust
+(est2 stored)
+
+. esttab, replace se ar2 k(wheatsuit  potatosuit  elevation_range  ln_ma_1789_ba_own
+> _dist_default )  star(* 0.10 ** 0.05 *** 0.01)
+
+--------------------------------------------
+                      (1)             (2)   
+                   sample          sample   
+--------------------------------------------
+wheatsuit         0.00952        -0.00829   
+                 (0.0433)        (0.0466)   
+
+elevation_~e   -0.0000276      -0.0000986*  
+              (0.0000450)     (0.0000520)   
+
+potatosuit         0.0365          0.0477   
+                 (0.0511)        (0.0555)   
+
+ln_ma_1789..        0.199**        0.0987   
+                 (0.0863)         (0.146)   
+--------------------------------------------
+N                     534             534   
+adj. R-sq           0.009           0.067   
+--------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Table A3: Percent Land Confiscated and District Revenues in 1880, 1900.
+
+. *Regression 1: bivariate, FE13
+
+. eststo: quietly: reg revenusannuels1880 super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 2: control for wheat suit, FE13
+
+. eststo: quietly: reg revenusannuels1880 super1adj wheatsuit i.FE13 if sample==1, r
+> obust
+(est2 stored)
+
+. *Regression 3: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg revenusannuels1880 super1adj wheatsuit ln_ma_1789_ba_own_dist
+> _default i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             revenus~1880    revenus~1880    revenus~1880   
+------------------------------------------------------------
+super1adj         53403.7        241266.8        226198.0   
+               (241820.4)      (256056.5)      (254284.8)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.108           0.258           0.380   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. * Revenues Annules 1900
+
+. *Regression 4: bivariate, FE13
+
+. eststo: quietly: reg revenusannuels1900 super1adj i.FE13 if sample==1, robust
+(est1 stored)
+
+. *Regression 5: control for wheat suit, FE13
+
+. eststo: quietly: reg revenusannuels1900 super1adj wheatsuit i.FE13 if sample==1, r
+> obust
+(est2 stored)
+
+. *Regression 6: control for wheat suit and market access, FE13
+
+. eststo: quietly: reg revenusannuels1900 super1adj wheatsuit ln_ma_1789_ba_own_dist
+> _default i.FE13 if sample==1, robust
+(est3 stored)
+
+. esttab, replace se ar2 k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+             revenus~1900    revenus~1900    revenus~1900   
+------------------------------------------------------------
+super1adj         53346.2        379662.6        350462.3   
+               (460242.2)      (489421.4)      (492317.6)   
+------------------------------------------------------------
+N                     194             194             194   
+adj. R-sq           0.205           0.311           0.419   
+------------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. eststo clear
+
+. 
+. *Figure A4: Correlation between distance to 1600 bishopric and Revolutionary confi
+> scations.
+
+. lpoly super1adj fr_bishop_dist if sample==1, noscat ci bw(5000)pw(1472.21)
+
+. 
+. *Figure A5: Distribution of average farm sizes above and below mean confiscations 
+> in 1862.
+
+. kdensity avg_farm_size_1862, nograph generate(x fx)
+
+. kdensity avg_farm_size_1862 if super1adj>=5.9, nograph generate(fx0) at(x)
+
+. kdensity avg_farm_size_1862 if super1adj<5.9, nograph generate(fx1) at(x)
+
+. label var fx0 "confiscations>mean"
+
+. label var fx1 "confiscations<mean"
+
+. line fx0 fx1 x, sort ytitle(Density)
+
+. drop fx x fx0 fx1
+
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/noeljohnson/Dropbox/Research/Revolutionary Expropriation/Replica
+> tion Files/Confiscations Analysis JLE Final.log
+  log type:  text
+ closed on:   5 Oct 2020, 14:06:50
+------------------------------------------------------------------------------------

@@ -1,0 +1,113 @@
+data(cars)
+m <- lm( dist ~ speed , data=cars )
+coef(m)
+plot( resid(m) ~ speed , data=cars )
+library(maptools)
+library(maptools)#
+library(sp)#
+library(rgdal)#
+library(xlsx)#
+library(gdistance)#
+library(raster)#
+library(gdata)#
+require(gdata)#
+library(dismo)
+library(devtools)  #
+install_github("kingaa/pomp")
+library(maptools)#
+library(sp)#
+library(rgdal)#
+library(xlsx)#
+library(gdistance)#
+library(raster)#
+library(gdata)#
+require(gdata)#
+library(dismo)
+library(devtools)  #
+install_github("kingaa/pomp")
+install_github("kingaa/pomp")
+library(maptools)
+require(gdata)
+setwd("~/Desktop/Dropbox/Research/General Research Material/R Work/RWorkBBB")
+library(maptools)
+gpclibPermit()
+gpclibPermit(True)
+gpclibPermit()
+~/.R/Makevars
+/Applications/R./Makevars
+~/R./Makevars
+~/.R/Makevars
+/Applications/.R/Makevars
+~/.R/Makevars
+CC=/usr/local/clang4/bin/clang#
+CXX=/usr/local/clang4/bin/clang++#
+LDFLAGS=-L/usr/local/clang4/lib
+library(maptools)
+library(maptools)#
+library(sp)#
+library(rgdal)#
+library(xlsx)#
+library(gdistance)#
+library(raster)#
+library(gdata)#
+require(gdata)#
+library(dismo)#
+#
+setwd("/Users/Noel Johnson Notebook/Desktop/Dropbox/Research/General Research Material/R Work/RWorkBBB")
+setwd("/Users/Noel Johnson Notebook/Desktop/Dropbox/Research/General Research Material/R Work/RWorkBBB/Cost2")
+wd
+d
+cd
+install.packages("gpclib")
+library(maptools)
+gpclibPermit()
+library(sp)
+library(rgdal)
+library(xlsx)
+install.packages("rJava",type='source')
+library(xlsx)
+install.packages("tidyverse")
+install.packages("openxlsx", dependencies=TRUE)
+install.packages("gpclib")
+#The goal is to, for every district, calculate the distance to cities of different size classes.#
+#
+library(raster)#
+library(sf)#
+library(tidyverse)#
+library(tmap)#
+library(skimr)#
+#library(haven)#
+#library(nngeo)#
+#
+setwd("/Users/noeljohnson/Dropbox/Research/Revolutionary Expropriation/JLE Revisions/Cities_Bins_Comment_10/")#
+#
+#Bring in districts shape file.#
+#define the projection#
+EEC <- "+proj=eqdc +lat_0=0 +lon_0=0 #
++lat_1=43 +lat_2=62 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs"#
+districts <- st_read("French_Districts/District_proj_3.shp")#
+#file.exists("French_Districts/District_proj_3.shp")#
+districts_proj <- st_transform(districts, EEC)#
+head(districts_proj)#
+glimpse(districts_proj)#
+districts_proj <- select(districts_proj, c(geometry,ID,districtna))#
+districts_proj <- rename(districts_proj,id=ID)#
+plot(districts_proj["id"], col=NA, reset = FALSE)#
+#
+districts_sorted <- arrange(districts_proj,id)#
+head(districts_sorted)#
+#
+districts_map <- tm_shape(districts_proj) + tm_borders(col = "black")#
+districts_map#
+#
+##Bring in Bairoch data on city pops.#
+cities <- read_dta("Bairoch_Cities/Base Jewish Cities Data Final.dta")#
+cities <- filter(cities, year==1800)#
+skim(cities)#
+cities <- select(cities,c(Bairoch_id,chandlerpop,pop,pop_bairoch,year,longitude,latitude))#
+#file.exists("French_Districts/District_proj_3.shp")#
+cities_spatial <- st_as_sf(cities, coords = c("longitude", "latitude"), crs = 4326)#
+cities_proj <- st_transform(cities_spatial, EEC)#
+head(cities_proj)#
+glimpse(cities_proj)#
+plot(cities_proj["pop"], reset = FALSE)
