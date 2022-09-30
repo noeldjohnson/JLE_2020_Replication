@@ -388,7 +388,7 @@ eststo: ivreg2 ALTprairies1852 (super1adj=dist_bishop_first_quartile) wheatsuit 
 esttab, replace se k(super1adj)  star(* 0.10 ** 0.05 *** 0.01)
 eststo clear
 
-*Table 5: Column 3: Conley Standard Errors
+*Table 5: Column 3: Conley Standard Errors (using http://www.fight-entropy.com/2010/06/standard-error-adjustment-ols-for.html)
 *create a constant and a year variable
 gen const = 1
 gen year = 1800
